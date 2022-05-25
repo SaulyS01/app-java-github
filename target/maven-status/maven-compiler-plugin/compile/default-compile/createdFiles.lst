@@ -1,0 +1,6 @@
+com\mycompany\soap\dao\UsuarioDao.class
+com\mycompany\soap\daoImpl\UsuarioDaoImpl.class
+com\mycompany\soap\config\Conn.class
+com\mycompany\soap\model\Usuario.class
+com\mycompany\soap\test\Test.class
+com\mycompany\soap\ws\UsuarioWebService.class
