@@ -21,23 +21,32 @@ import javax.jws.WebParam;
 @WebService(serviceName = "UsuarioWebService")
 public class UsuarioWebService {
 
-    private UsuarioDao dao = new UsuarioDaoImpl();
+    static UsuarioDao dao = new UsuarioDaoImpl();
 
-    /**
-     * This is a sample web service operation
-     */
-    @WebMethod(operationName = "hello")
-    public String hello(@WebParam(name = "name") String txt) {
-        return "Hello " + txt + " !";
+    @WebMethod(operationName = "crear")
+    public int crear(@WebParam(name = "username") String username, @WebParam(name = "password") String password,
+            @WebParam(name = "idpersona") int idpersona, @WebParam(name = "idrol") int idrol) {
+        return dao.create(new Usuario(0, username, password, idpersona, idrol, "", false));
     }
 
-    @WebMethod(operationName = "readAllUsuario")
-    public List<Usuario> readAllUsuario() {
+    @WebMethod(operationName = "editar")
+    public int editar(@WebParam(name = "idusuario") int idusuario, @WebParam(name = "username") String username, @WebParam(name = "password") String password,
+            @WebParam(name = "idpersona") int idpersona, @WebParam(name = "idrol") int idrol) {
+        return dao.update(new Usuario(idusuario, username, password, idpersona, idrol, "", false));
+    }
+
+    @WebMethod(operationName = "eliminar")
+    public int eliminar(@WebParam(name = "idusuario") int idusuario) {
+        return dao.delete(idusuario);
+    }
+
+    @WebMethod(operationName = "read")
+    public Usuario read(@WebParam(name = "idusuario") int idusuario) {
+        return dao.read(idusuario);
+    }
+
+    @WebMethod(operationName = "readAll")
+    public List<Usuario> readAll() {
         return dao.readAll();
-    }
-
-    @WebMethod(operationName = "readAll2")
-    public List<Map<String, Object>> readAll2() {
-        return dao.readAll2();
     }
 }

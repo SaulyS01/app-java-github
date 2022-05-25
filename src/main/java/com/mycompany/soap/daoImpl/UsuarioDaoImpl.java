@@ -22,7 +22,6 @@ public class UsuarioDaoImpl implements UsuarioDao {
         List<Usuario> lista = new ArrayList<>();
         try {
             String SQL = "select * from usuarios";
-            int estado = 0;
             cn = Conn.getConn();
             ps = cn.prepareStatement(SQL);
             rs = ps.executeQuery();
@@ -34,12 +33,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
                 user.setIdpersona(rs.getInt("idpersona"));
                 user.setIdrol(rs.getInt("idrol"));
                 user.setFecha(rs.getString("fechacreacion"));
-                if (rs.getBoolean("estado") == true) {
-                    estado = 1;
-                } else {
-                    estado = 0;
-                }
-                user.setEstado(estado);
+                user.setEstado(rs.getBoolean("estado"));
                 lista.add(user);
             }
         } catch (Exception e) {
@@ -52,19 +46,12 @@ public class UsuarioDaoImpl implements UsuarioDao {
     public int create(Usuario user) {
         int x = 0;
         boolean estado = false;
-        String SQL = "insert into usuarios(username, password, idpersona, idrol, fechacreacion, estado) values(?, ?, ?, ?, ?, ?)";
+        String SQL = "insert into usuarios(username, password, idpersona, idrol, now(), true) values(?, ?, ?, ?)";
         try {
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
             ps.setInt(3, user.getIdpersona());
             ps.setInt(4, user.getIdrol());
-            ps.setString(5, user.getFecha());
-            if (user.getEstado() == 1) {
-                estado = true;
-            } else {
-                estado = false;
-            }
-            ps.setBoolean(6, estado);
             x = ps.executeUpdate();
         } catch (Exception e) {
             System.out.println("Error: " + e);
@@ -76,20 +63,13 @@ public class UsuarioDaoImpl implements UsuarioDao {
     public int update(Usuario user) {
         int x = 0;
         boolean estado = false;
-        String SQL = "update usuarios set username=?, password=?, idpersona=?, idrol=?, fechacreacion=?, estado=?) where idusuario=?";
+        String SQL = "update usuarios set username=?, password=?, idpersona=?, idrol=?) where idusuario=?";
         try {
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
             ps.setInt(3, user.getIdpersona());
             ps.setInt(4, user.getIdrol());
-            ps.setString(5, user.getFecha());
-            if (user.getEstado() == 1) {
-                estado = true;
-            } else {
-                estado = false;
-            }
-            ps.setBoolean(6, estado);
-            ps.setInt(7, user.getIdusuario());
+            ps.setInt(5, user.getIdusuario());
             x = ps.executeUpdate();
         } catch (Exception e) {
             System.out.println("Error: " + e);
@@ -100,6 +80,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
     @Override
     public Usuario read(int id) {
         Usuario user = new Usuario();
+        int estado = 0;
         String SQL = "select * from usuarios where idusuario=?";
         try {
             cn = Conn.getConn();
@@ -113,7 +94,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
                 user.setIdpersona(rs.getInt("idpersona"));
                 user.setIdrol(rs.getInt("idrol"));
                 user.setFecha(rs.getString("fechacreacion"));
-                user.setEstado(rs.getInt("estado"));
+                user.setEstado(rs.getBoolean("estado"));
             }
         } catch (Exception e) {
             System.out.println("Error: " + e);
@@ -136,7 +117,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
         return x;
     }
 
-    @Override
+    /*@Override
     public List<Map<String, Object>> readAll2() {
         List<Map<String, Object>> lista = new ArrayList<>();
         String SQL = "select u.idusuario, u.username, p.apellidos, p.nombres, r.nombre  from usuarios as u "
@@ -159,5 +140,5 @@ public class UsuarioDaoImpl implements UsuarioDao {
             System.out.println("Error " + e);
         }
         return lista;
-    }
+    }*/
 }

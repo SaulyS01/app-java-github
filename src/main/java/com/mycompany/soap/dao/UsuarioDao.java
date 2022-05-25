@@ -10,6 +10,5 @@ public interface UsuarioDao {
     int update(Usuario user);
     Usuario read(int id);
     int delete(int id);
-    List<Map<String, Object>> readAll2();
+    /*List<Map<String, Object>> readAll2();*/
 }
-
