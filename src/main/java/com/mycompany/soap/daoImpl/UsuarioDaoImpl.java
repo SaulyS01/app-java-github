@@ -105,7 +105,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
     @Override
     public int delete(int id) {
         int x = 0;
-        String SQL = "delete from usuarios where idusuario=?";
+        String SQL = "update usuarios set estado=false where idusuario=id";
         try {
             cn = Conn.getConn();
             ps = cn.prepareStatement(SQL);
